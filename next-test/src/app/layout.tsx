@@ -1,6 +1,8 @@
 import React from 'react'
 import { Metadata } from 'next'
  
+import * as aaa from 'archivelayer'
+
 export const metadata: Metadata = {
   title: '...',
   description: '...',
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({children,}: {children: React.ReactNode}) {
+  console.log(aaa.AAA)
   return (
     <html lang="en" >        
       <body >
