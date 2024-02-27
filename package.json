@@ -1,0 +1,24 @@
+{
+  "name": "archivelayer-monorepo",
+  "version": "0.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Mona04",
+    "email": "moksha1905@gmail.com"
+  },
+  "homepage": "https://mona04.github.io/study-log/",
+  "type": "module",
+  "private": true,
+
+  "scripts": {
+    "dev": "next dev -p 4000",
+    "build": "next build & next-image-export-optimizer"
+  },
+  "workspaces": [
+    "./packages/*"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

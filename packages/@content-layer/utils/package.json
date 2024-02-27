@@ -1,0 +1,29 @@
+{
+  "name": "@content-layer/utils",
+  "version": "0.0.0",
+  "license": "MIT",
+  "type": "module",
+  
+  "main": "dist/index.js",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "./dist/**/*.{js,ts,map}",
+    "./src",
+    "./package.json"
+  ],
+  
+  "scripts": {
+    "prepare": "npm run build",
+    "build":   "tsc --build",
+    "tmp":     "env",
+    "test":    "echo No tests yet"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {
+    
+  }
+}
+  

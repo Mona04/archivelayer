@@ -1,0 +1,31 @@
+{
+  "name": "next-remote-watcher",
+  "version": "0.0.0",
+  "description": "ContentLayer has been unmaintained since version 0.3.4, yet I still require its functionality.",
+  "license": "MIT",
+  "author": {
+    "name": "Mona04",
+    "email": "moksha1905@gmail.com"
+  },
+  "private": true,
+  
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "typescript": "5.3.3",    
+    "next": "^14.0.4",
+    "webpack": "5.89.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@types/node": "20.10.5",
+    "@types/react": "18.2.45"
+  }
+}

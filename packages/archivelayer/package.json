@@ -1,0 +1,35 @@
+{
+  "name": "archivelayer",
+  "description": "content builder.",
+  "version": "0.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Mona04",
+    "email": "moksha1905@gmail.com"
+  },
+    
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc --build"
+  },
+
+  "workspaces": [
+    "../*",
+    "./simcontentlayer/*"
+  ],
+  "dependencies": {
+    "react": "18.2.0",
+    "typescript": "5.3.3",    
+    "next": "^14.0.4",
+    "fs": "^0.0.1-security" 
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@types/node": "20.10.5",
+    "@types/react": "18.2.45"
+  }
+}
