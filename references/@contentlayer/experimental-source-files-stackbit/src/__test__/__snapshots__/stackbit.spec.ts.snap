@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`kitchen-sink 1`] = `
+{
+  "documentTypeDefMap": {},
+  "hash": "NOT_USED",
+  "nestedTypeDefMap": {},
+}
+`;
+
+exports[`next-starter 1`] = `
+{
+  "documentTypeDefMap": {},
+  "hash": "NOT_USED",
+  "nestedTypeDefMap": {},
+}
+`;
+
+exports[`small-business 1`] = `
+{
+  "documentTypeDefMap": {},
+  "hash": "NOT_USED",
+  "nestedTypeDefMap": {},
+}
+`;

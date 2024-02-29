@@ -1,1 +1,2 @@
-export * from './import-helper'
+export * from "./test.js"
+export * from './import-helper.js'

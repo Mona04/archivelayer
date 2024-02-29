@@ -11,18 +11,13 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "sideEffects": false,
-  "scripts": {
-    "prepare": "npm run build",
-    "build": "tsc --build"
-  },
+  "sideEffects": true,
 
   "workspaces": [
-    "../*",
-    "./simcontentlayer/*"
+    "./*"
   ],
   "dependencies": {
-    "@archivelayer/utils": "*",
+    "@archivelayer/utils": "file:../@archivelayer/utils",
     "react": "18.2.0",
     "typescript": "5.3.3",    
     "next": "^14.0.4",

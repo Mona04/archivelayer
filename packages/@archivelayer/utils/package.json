@@ -14,8 +14,6 @@
   ],
   
   "scripts": {
-    "prepare": "npm run build",
-    "build":   "tsc --build",
     "tmp":     "env",
     "test":    "echo No tests yet"
   },

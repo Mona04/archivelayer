@@ -26,6 +26,7 @@ export const defaultPluginOptions: NextPluginOptions = {}
 export const createContentlayerPlugin =
   (pluginOptions: NextPluginOptions = defaultPluginOptions) =>
   (nextConfig: Partial<NextConfig> = {}): Partial<NextConfig> => {
+
     return {
       ...nextConfig,
       onDemandEntries: {

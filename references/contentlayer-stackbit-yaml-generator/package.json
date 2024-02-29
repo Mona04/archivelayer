@@ -1,0 +1,31 @@
+{
+  "name": "contentlayer-stackbit-yaml-generator",
+  "version": "0.3.4",
+  "type": "module",
+  "bin": "./dist/cli/index.js",
+  "exports": "./dist/lib/index.js",
+  "types": "./dist/lib/index.d.ts",
+  "files": [
+    "./dist/*.{js,ts,map}",
+    "./dist/!(__test__)/**/*.{js,ts,map}",
+    "./src",
+    "./package.json"
+  ],
+  "scripts": {
+    "test": "FORCE_COLOR=1 vitest"
+  },
+  "dependencies": {
+    "@contentlayer/core": "workspace:*",
+    "@contentlayer/utils": "workspace:*",
+    "@stackbit/sdk": "^0.3.25",
+    "clipanion": "^3.2.1",
+    "typanion": "3.12.1",
+    "yaml": "^2.3.1"
+  },
+  "devDependencies": {
+    "contentlayer": "workspace:*",
+    "typescript": "^5.1.6",
+    "vite": "^4.3.1",
+    "vitest": "0.30.1"
+  }
+}

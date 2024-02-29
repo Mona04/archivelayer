@@ -11,8 +11,8 @@
   "private": true,
 
   "scripts": {
-    "dev": "next dev -p 4000",
-    "build": "next build & next-image-export-optimizer"
+    "build": "tsc --build tsconfig.all.json",
+    "dev": "npm run --prefix tests/next-test dev"
   },
   "workspaces": [
     "./packages/*"
