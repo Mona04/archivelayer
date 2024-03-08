@@ -7,6 +7,7 @@ import { PHASE_PRODUCTION_BUILD, PHASE_DEVELOPMENT_SERVER } from 'next/constants
 import { withContentlayer } from 'next-remote-watcher'
 import * as AAA from 'archivelayer'
 
+console.log(AAA.config);
 /**
  * @type {import('next').NextConfig}
  */
@@ -76,7 +77,6 @@ const config = (phase, { defaultConfig }) =>
         if(dev){        
         }
       }
-
       return config
     },
   };

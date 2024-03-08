@@ -17,11 +17,11 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({children,}: {children: React.ReactNode}) {
-  console.log(aaa.AAA)
   return (
     <html lang="en" >        
       <body >
         {children}
+        <p>{aaa.config.AAA}</p>
       </body>   
     </html>
   )
