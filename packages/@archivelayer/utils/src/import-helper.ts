@@ -1,9 +1,9 @@
 //import module from 'module'
+import path from 'path'
 
-export function requireFromString(src : string, filename : string) {
-  //require(src);
-  //var m = module.constructor();
-  //m.paths = module.paths;
-  //m._compile(src, filename);
-  //return m.exports;
+export async function requireFromString(filename : string) {
+  var configPath = path.join(process.cwd(), filename)
+  const res = await import(/* webpackIgnore: true */`file://${configPath}`);
+  //const res = { default : { AAA : "ggodd"}}
+  return res;
 }
