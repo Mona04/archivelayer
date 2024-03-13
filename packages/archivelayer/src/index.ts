@@ -16,6 +16,8 @@ var InitChecker = (function() {
 //var configPath = path.join(process.cwd(), 'archivelayer.config.js')
 var configPath = path.join(process.cwd(), 'archivelayer.config.js')
 //export const config = await import(/* webpackIgnore: true */`file://${configPath}`);
-export const config = await requireFromString('archivelayer.config.js');
-const aaa = config.default.AAA;
+//export const config = await requireFromString('archivelayer.config.js');
+//const aaa = config.default.AAA;
+const aaa = "asf";
+console.log('asf')
 export let AAA = aaa;
