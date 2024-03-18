@@ -3,14 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 4000",
-    "build": "next build & next-image-export-optimizer",
-    "predeploy": "next build & next-image-export-optimizer",
-    "deploy": "next-sitemap & node ./src/scripts/nojekyll.js & gh-pages -d out -b gh-pages -t true",
-    "test": "jest --watch ",
-    "cb": "contentlayer build ",
-    "bt": "node ./src/scripts/blog.js",
-    "cache": "ts-node ./src/scripts/search-cache.ts"
+    "dev": "archivelayer build & next dev -p 4000",
+    "build": "next build & next-image-export-optimizer"
   },
   "workspaces": [
     "../../packages/*"

@@ -22,6 +22,7 @@ if(InitChecker.initialize())
 {
 
 }
+console.log("asdf")
 
 //var configPath = path.join(process.cwd(), 'archivelayer.config.js')
 //var configPath = path.join(process.cwd(), 'archivelayer.config.js')

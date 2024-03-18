@@ -2,7 +2,7 @@ import type { WebpackOptionsNormalized } from 'webpack'
 
 import { checkConstraints } from './check-constraints.js'
 
-import { requireFromString } from '@archivelayer/utils'
+//import { requireFromString } from '@archivelayer/utils'
 
 export type NextPluginOptions = {
   configPath?: string | undefined
@@ -63,10 +63,11 @@ export const runBeforeWebpackCompile = async ({
     checkConstraints()
     await runContentlayerBuild({ configPath })
   } else if (isNextDev && !devServerStartedRef.current) {
-    devServerStartedRef.current = true
+    devServerStartedRef.current = true;
 
-    const configs = await requireFromString('archivelayer.config');
-    console.log(configs)
+    //const configs = await (await import(/* webpackIgnore: true */"@archivelayer/utils")).requireFromString('archivelayer.config');
+    //console.log("!!!!!!!!!!!!!!!!!!!!!!")
+    //console.log(configs)
     // TODO also block here until first Contentlayer run is complete
     runContentlayerDev({ configPath })
   }
