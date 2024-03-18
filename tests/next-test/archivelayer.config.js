@@ -1,8 +1,8 @@
-import * as fs from 'fs'
-
-const a = fs.readFileSync('archivelayer.config.js')
-const config = {
-  "AAA" : a.toString()
+/**
+ * @type {import('archivelayer').ArchiveLayerConfigs}
+ **/
+const config  = {
+  SourcePath: "./_content/"
 }
 
 export default config;

@@ -1,8 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
  
-import * as aaa from 'archivelayer'
-import * as bbb from '../../archivelayer.config.js'
 
 export const metadata: Metadata = {
   title: '...',
@@ -22,7 +20,6 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
     <html lang="en" >        
       <body >
         {children}
-        <p>{aaa.AAA}</p>
       </body>   
     </html>
   )

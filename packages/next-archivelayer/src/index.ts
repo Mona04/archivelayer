@@ -5,7 +5,6 @@ import { type NextPluginOptions, runBeforeWebpackCompile } from './plugin.js'
 
 export type { NextConfig }
 
-
 export const defaultPluginOptions: NextPluginOptions = {}
 
 /**
@@ -33,6 +32,7 @@ export const createContentlayerPlugin =
         maxInactiveAge: 60 * 60 * 1000, // extend `maxInactiveAge` to 1 hour (from 15 sec by default)
         ...nextConfig.onDemandEntries, // use existing onDemandEntries config if provided by user
       },
+
       webpack(config: webpack.Configuration, options: any) {
         
         config.watchOptions = {

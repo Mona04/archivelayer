@@ -1,5 +1,5 @@
 {
-  "name": "next-remote-watcher",
+  "name": "next-archivelayer",
   "version": "0.0.0",
   "description": "ContentLayer has been unmaintained since version 0.3.4, yet I still require its functionality.",
   "license": "MIT",
@@ -19,7 +19,8 @@
   ],
   "dependencies": {
     "archivelayer": "file:../archivelayer",
-
+    
+    "esbuild": "0.20.2",
     "react": "18.2.0",
     "typescript": "5.3.3",    
     "webpack": "5.90.3",

@@ -5,6 +5,6 @@
     "references": [
       { "path": "./packages/@archivelayer/utils" },
       { "path": "./packages/archivelayer" },
-      { "path": "./packages/next-remote-watcher" }
+      { "path": "./packages/next-archivelayer" }
     ]
   }

@@ -52,7 +52,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".contentlayer/generated",
-    "out/types/**/*.ts" ],
+    "out/types/**/*.ts", "archivelayer.config.js" ],
   "exclude": [
     "node_modules"
   ]

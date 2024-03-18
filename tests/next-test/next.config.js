@@ -4,7 +4,7 @@
 import path from 'path'
 import { PHASE_PRODUCTION_BUILD, PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 //import { withContentlayer } from 'next-contentlayer';
-import { withContentlayer } from 'next-remote-watcher'
+import { withContentlayer } from 'next-archivelayer'
 
 /**
  * @type {import('next').NextConfig}
@@ -30,7 +30,6 @@ const config = (phase, { defaultConfig }) =>
     swcMinify: true,
     trailingSlash: false,
     experimental: {
-      esmExternals: 'loose'
     },
     //onDemandEntries: {
     //  // period (in ms) where the server will keep pages in the buffer
