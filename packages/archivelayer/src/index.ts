@@ -1,11 +1,8 @@
 import path from 'path'
 import fs from 'fs'
-import { ExportTestVariable, requireFromString } from '@archivelayer/utils'
+import { ExportTestVariable } from '@archivelayer/utils'
 
-export interface ArchiveLayerConfigs {
-  SourcePath: string | undefined,
-  
-}
+
 
 var InitChecker = (function() { 
   var instance : any;

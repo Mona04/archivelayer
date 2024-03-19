@@ -7,7 +7,7 @@
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo.json"
   },
-  "include": ["./src", "../../archivelayer/src/configs.d.ts"],
+  "include": ["./src", "src/configs.d.ts"],
   "exclude": [
     "node_modules",
     "./dist/**/*"
