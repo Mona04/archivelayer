@@ -65,9 +65,6 @@ export const runBeforeWebpackCompile = async ({
   } else if (isNextDev && !devServerStartedRef.current) {
     devServerStartedRef.current = true;
 
-    //const configs = await (await import(/* webpackIgnore: true */"@archivelayer/utils")).requireFromString('archivelayer.config');
-    //console.log("!!!!!!!!!!!!!!!!!!!!!!")
-    //console.log(configs)
     // TODO also block here until first Contentlayer run is complete
     runContentlayerDev({ configPath })
   }

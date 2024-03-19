@@ -7,7 +7,6 @@ date: 2015-05-25
 
 Wow! I love blogging so much already.
 
-
 ([Wikipedia Link](https://en.wikipedia.org/wiki/Salted_duck_egg))
 
 Yeah, I didn't
