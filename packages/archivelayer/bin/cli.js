@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 
 import {Command} from 'commander'
-import {requireConfig, watchFile} from '@archivelayer/utils'
+import {requireConfig, WatchFile} from '@archivelayer/utils'
 
 const program = new Command();
+const callback = (fileName) => {
+  console.log(` ${fileName}`)
+}
 const gogo = async ()=>{
   const config = await requireConfig();
-  watchFile(config.SourcePath);
+  const watcher = new WatchFile(config.SourcePath, callback);
 }
+
 
 program.command("build")
   .action(gogo);
