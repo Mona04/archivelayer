@@ -1,20 +1,12 @@
 #!/usr/bin/env node
 
 import {Command} from 'commander'
-import {requireConfig, WatchFile} from '@archivelayer/utils'
+import {Startup} from '@archivelayer/core'
 
 const program = new Command();
-const callback = (fileName) => {
-  console.log(` ${fileName}`)
-}
-const gogo = async ()=>{
-  const config = await requireConfig();
-  const watcher = new WatchFile(config.SourcePath, callback);
-}
-
 
 program.command("build")
-  .action(gogo);
+  .action(Startup);
 
 program
   .version("0.0.1", "-v, --version")

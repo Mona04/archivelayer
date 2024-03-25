@@ -1,9 +1,10 @@
 import path from 'path'
 import fs from 'fs'
-import { ExportTestVariable } from '@archivelayer/utils'
+
+export * from './defineDocumentType.js'
 
 
-
+/*
 var InitChecker = (function() { 
   var instance : any;
   return {
@@ -19,7 +20,4 @@ if(InitChecker.initialize())
 {
 
 }
-
-//var configPath = path.join(process.cwd(), 'archivelayer.config.js')
-//var configPath = path.join(process.cwd(), 'archivelayer.config.js')
-//export const config = await import(/* webpackIgnore: true */`file://${configPath}`);
+*/

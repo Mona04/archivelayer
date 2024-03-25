@@ -11,6 +11,8 @@ export class WatchFile
     this.mCallback = callback;
     fs.watch(path, {recursive: true}, this.watchCallback)
   }
+
+  // https://stackoverflow.com/questions/67244227/watch-files-and-folders-recursively-with-node-js-also-get-info-whenever-change
   watchCallback : fs.WatchListener<string> = (eventName, fileName) => {
     var path = `${this.mPath}/${fileName}`;
     var stats = fs.statSync(path);
