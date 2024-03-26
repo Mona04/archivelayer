@@ -1,4 +1,5 @@
 import fs from 'fs'
+import {minimatch} from 'minimatch'
 
 export class WatchFile
 {
@@ -24,4 +25,8 @@ export class WatchFile
 
     this.mCallback(fileName);
   }
+}
+
+export function isFilePathMatchPattern(filePath:string, pattern:string) {
+  return minimatch(filePath, pattern)
 }

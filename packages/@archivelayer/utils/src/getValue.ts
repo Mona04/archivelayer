@@ -1,3 +1,7 @@
-export const getValue = (input: object|{():object}) => {
-  return (typeof input === 'function') ? input() : input;
+export function getValue<T>(input: T | (()=>T) ) {
+  if(typeof input === 'function') {
+    var iinput : any = input;
+    return iinput();
+  }
+  return input;
 }
