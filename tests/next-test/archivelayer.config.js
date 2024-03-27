@@ -2,6 +2,7 @@ import {defineDocumentType} from "archivelayer"
 
 import rm_gfm      from 'remark-gfm'
 import rm_math     from 'remark-math'
+import prettyCode  from 'rehype-pretty-code'
 
 export const BlogMDPost = defineDocumentType(() => ({
   name: 'BlogMDPost',
@@ -11,19 +12,57 @@ export const BlogMDPost = defineDocumentType(() => ({
   //computedFields: blogComputedFields(),
 }))
 
+export const BlogMDXPost = defineDocumentType(() => ({
+  name: 'BlogMDXPost',
+  filePathPattern: `**/*.mdx`,
+  contentType: 'mdx',
+  //fields: blogFields(),
+  //computedFields: blogComputedFields(),
+}))
+
 /**
  * @type {import('archivelayer').ArchiveLayerConfigs}
  **/
-const config  = {
+const config = {
   sourcePath: "./_content/",
-  documentTypes: [BlogMDPost],
+  documentTypes: [BlogMDPost, BlogMDXPost],
   mdx:{ 
     remarkPlugins: [ 
       rm_gfm, [rm_math,]
     ],
     rehypePlugins: [
+      [ prettyCode, prettyCodeOption ]
     ]
   },
+  markdown:{ 
+    remarkPlugins: [ 
+      rm_gfm, [rm_math,]
+    ],
+    rehypePlugins: [
+      [ prettyCode, prettyCodeOption ]
+    ]
+  }
+}
+
+
+/**
+ * // https://rehype-pretty-code.netlify.app/    
+ * @returns 
+ */
+function prettyCodeOption()
+{
+  return  {
+    grid: true,
+    showLineNumbers: true,
+    keepBackground: true,
+    //theme: {
+    //  dark: 'github-dark',//'rose-pine-moon',
+    //},
+    theme: JSON.parse(
+      readFileSync(new URL('../../../src/configs/pretty-code-theme.json', import.meta.url), 'utf-8')
+    ),
+    //onVisitTitle: onVisitTitle,
+  };
 }
 
 export default config;

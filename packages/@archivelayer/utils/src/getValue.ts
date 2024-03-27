@@ -1,4 +1,4 @@
-export function getValue<T>(input: T | (()=>T) ) {
+export function getValue<T>(input: T | (()=>T) ) : T {
   if(typeof input === 'function') {
     var iinput : any = input;
     return iinput();

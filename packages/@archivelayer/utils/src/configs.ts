@@ -5,11 +5,19 @@ export interface DocumentType {
   filePathPattern? : string,
 }
 
+export type MarkdownOptions = {
+  remarkPlugins?: unified.Pluggable[]
+  rehypePlugins?: unified.Pluggable[]
+}
+
+export type MDXOptions = {
+  remarkPlugins?: unified.Pluggable[]
+  rehypePlugins?: unified.Pluggable[]
+}
+
 export interface ArchiveLayerConfigs {
     sourcePath?   : string | undefined,
     documentTypes?: [DocumentType | {():DocumentType}] | undefined,
-    mdx?: {
-      remarkPlugins: unified.Pluggable[],
-      rehypePlugins: unified.Pluggable[],
-    },
+    markdown?: MarkdownOptions,
+    mdx?: MDXOptions
   }
