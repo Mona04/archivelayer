@@ -6,6 +6,7 @@ export class WatchFile
   mActionDone : {[key:string]:number} = {} 
   mPath = "";
   mCallback : (fileName:string) => void;
+  
   constructor(path:string, callback:(fileName:string) => void)
   {
     this.mPath = path;

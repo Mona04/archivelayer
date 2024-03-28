@@ -7,8 +7,8 @@ import prettyCode  from 'rehype-pretty-code'
 export const BlogMDPost = defineDocumentType(() => ({
   name: 'BlogMDPost',
   filePathPattern: `**/*.md`,
-  contentType: 'markdown'
-  //fields: blogFields(),  
+  contentType: 'markdown',
+  fields: blogFields(),  
   //computedFields: blogComputedFields(),
 }))
 
@@ -16,7 +16,7 @@ export const BlogMDXPost = defineDocumentType(() => ({
   name: 'BlogMDXPost',
   filePathPattern: `**/*.mdx`,
   contentType: 'mdx',
-  //fields: blogFields(),
+  fields: blogFields(),
   //computedFields: blogComputedFields(),
 }))
 
@@ -44,6 +44,16 @@ const config = {
   }
 }
 
+function blogFields() {
+  return {
+    title:        { required: true,  type: 'string',  },
+    date:         { required: false, type: 'date',     },
+    description:  { required: false, type: 'string',   },
+    tags:         { required: false, type: 'list', of: {type: 'string'} },
+    thumbnail:    { required: false, type: 'string'},
+    isDirectory:  { required: false, type: 'boolean'},
+  }
+}
 
 /**
  * // https://rehype-pretty-code.netlify.app/    

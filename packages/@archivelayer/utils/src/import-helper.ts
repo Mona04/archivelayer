@@ -1,10 +1,9 @@
 import path from 'path'
-import { ArchiveLayerConfigs } from './configs';
 
-export async function requireConfigs() : Promise<ArchiveLayerConfigs> {
+export async function requireConfigs<T>() : Promise<T> {
   var configPath = path.join(process.cwd(), "archivelayer.config.js")
   const res = await import(/* webpackIgnore: true */`file://${configPath}`)
-  .catch((r): { default: ArchiveLayerConfigs } =>{
+  .catch((r): { default: any } =>{
     console.log("archivelayer.config.js is not exists or invalid.")
     console.log(r)
     return { default : {}};
