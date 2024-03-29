@@ -1,5 +1,23 @@
 import type * as unified from 'unified'
 
+
+export interface RawDocumentData{
+  sourceFilePath: string,
+  sourceFileDir:  string,
+  sourceFileName: string,
+  flattenedPath:  string
+}
+
+export interface MDXContent{
+  code: string
+}
+export interface MarkdownContent{
+  html: string
+}
+
+export type DocumentData = any & {_raw:RawDocumentData, body:MDXContent|MarkdownContent}
+
+
 export type FieldType = 'string' | 'boolean' | 'date' | 'list';
 export interface FieldDef {
   required: boolean,

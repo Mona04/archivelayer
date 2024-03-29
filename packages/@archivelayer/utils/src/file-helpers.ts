@@ -4,27 +4,41 @@ import {minimatch} from 'minimatch'
 export class WatchFile
 {
   mActionDone : {[key:string]:number} = {} 
-  mPath = "";
-  mCallback : (fileName:string) => void;
-  
-  constructor(path:string, callback:(fileName:string) => void)
+  mBasePath = "";
+
+  mUpdateCallback : (fileName:string) => void;
+  mRemoveCallback : (fileName:string) => void;
+
+  constructor(
+    path:string, 
+    updateCallback:(fileName:string) => void,
+    removeCallback:(fileName:string) => void)
   {
-    this.mPath = path;
-    this.mCallback = callback;
+    this.mBasePath = path;
+    this.mUpdateCallback = updateCallback;
+    this.mRemoveCallback = removeCallback;
     fs.watch(path, {recursive: true}, this.watchCallback)
   }
 
   // https://stackoverflow.com/questions/67244227/watch-files-and-folders-recursively-with-node-js-also-get-info-whenever-change
   watchCallback : fs.WatchListener<string> = (eventName, fileName) => {
-    var path = `${this.mPath}/${fileName}`;
-    var stats = fs.statSync(path);
-    let seconds = +stats.mtime;
-    
     if(fileName === null) return;
-    if(this.mActionDone[fileName] == seconds) return;
-    this.mActionDone[fileName] = seconds
+    fileName = fileName.replace('\\', '/');
 
-    this.mCallback(fileName);
+    var path = `${this.mBasePath}/${fileName}`;
+
+    if(fs.existsSync(path) == false){
+      this.mRemoveCallback(fileName);
+      return;
+    }
+
+    const stats = fs.statSync(path);
+    const seconds = +stats.mtime;
+    
+    if(this.mActionDone[fileName] == seconds) return;
+
+    this.mActionDone[fileName] = seconds
+    this.mUpdateCallback(fileName);
   }
 }
 

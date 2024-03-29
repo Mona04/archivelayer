@@ -2,10 +2,11 @@ import fs from 'fs'
 
 import type * as unifiedd from 'unified'
 import {unified} from 'unified'
-import parse from 'remark-parse'
-import rehype from 'remark-rehype'
-import stringfy from 'rehype-stringify'
-import matter from 'gray-matter'
+import parse     from 'remark-parse'
+import mdx       from 'remark-mdx'
+import rehype    from 'remark-rehype'
+import stringfy  from 'rehype-stringify'
+import matter    from 'gray-matter'
 
 import {
   requireConfigs, WatchFile, isFilePathMatchPattern,
@@ -26,21 +27,37 @@ const isThisDocumentType = (docType:DocumentType, fileName: string) : boolean =>
   return true;
 }
 
+const getMatchingDocumentType = (configs:ArchiveLayerConfigs, fileName:string) => 
+{
+  for(var docTypeInput of configs.documentTypes)
+  {
+    const docType = getValue(docTypeInput);
+    if(isThisDocumentType(docType, fileName) == false) continue;
+    return docType;
+  }
+  return null;
+}
+
 function processContent(
   docType: DocumentType,
-  filePath: string, 
+  filePath: string,
+  FileFullPath: string,
   remarkPlugins: unifiedd.Pluggable[]|undefined,
   rehypePlugins: unifiedd.Pluggable[]|undefined
   )
 {
-  fs.readFile(filePath, (err, data)=>{
+  fs.readFile(FileFullPath, (err, data)=>{
     if(err){
       console.log(err)
     }
     else{
-      var parsed = unified().use(parse);
+      var parsed = unified()
+        .use(parse)
 
-      //var parsed = parsed.use(gfm);
+      if(docType.contentType === 'mdx')
+      {
+        parsed = parsed.use([mdx]);
+      }
 
       if(remarkPlugins != undefined)
       {
@@ -58,43 +75,56 @@ function processContent(
       
       var parsedContent = matter(data);
       
-      htmled.process(parsedContent.content, (err, data)=>{
-        if(err){
-          console.log(err)
-        }
-        else{
-          console.log(parsedContent.data)
-          console.log(data);
-          archiveManager.updateFile(docType, filePath, parsedContent.data, data!.toString());
-        }
-      });
+      try{
+        htmled.process(parsedContent.content, (err, data)=>{
+          if(err){
+            console.log(err)
+          }
+          else{
+            archiveManager.updateFile(docType, filePath, parsedContent.data, data!.toString());
+          }
+        });
+      }
+      catch (err){
+        console.log(err)
+      }
     }
   });
 }
 
-const callback = (configs:ArchiveLayerConfigs, fileName:string) => {
-    
-  for(var docTypeInput of configs.documentTypes)
+const onFileUpdated = (configs:ArchiveLayerConfigs, fileName:string) =>
+{    
+  const docType = getMatchingDocumentType(configs, fileName);
+  if(docType == null) return;
+  
+  const fileFullPath = `${configs.sourcePath}/${fileName}`;
+
+  if(docType.contentType === 'mdx')
   {
-    const docType = getValue(docTypeInput);
-    const r = isThisDocumentType(docType, fileName)
-
-    if(r == false) continue;
-    
-    const filePath = `${configs.sourcePath}/${fileName}`;
-
-    if(docType.contentType === 'mdx')
-    {
-      processContent(docType, filePath, configs.mdx?.remarkPlugins, configs.mdx?.rehypePlugins);
-    }
-    else if(docType.contentType === 'markdown')
-    {
-      processContent(docType, filePath, configs.markdown?.remarkPlugins, configs.markdown?.rehypePlugins);
-    }
-  }  
+    processContent(
+      docType, fileName, fileFullPath, 
+      configs.mdx?.remarkPlugins, 
+      configs.mdx?.rehypePlugins);
+  }
+  else if(docType.contentType === 'markdown')
+  {
+    processContent(
+      docType, fileName, fileFullPath, 
+      configs.markdown?.remarkPlugins, 
+      configs.markdown?.rehypePlugins);
+  }
 }
 
-export async function Startup() {
+const onFileRemoved = (configs:ArchiveLayerConfigs, fileName:string) =>
+{
+  const docType = getMatchingDocumentType(configs, fileName);
+  if(docType == null) return;
+
+  archiveManager.removeFile(docType, fileName);
+}
+
+export async function Startup() 
+{
   const configs = await requireConfigs<ArchiveLayerConfigs>();
   
   if(configs.sourcePath === undefined) return;
@@ -103,7 +133,8 @@ export async function Startup() {
   
   const watcher = new WatchFile(
     configs.sourcePath, 
-    (fileName)=>{callback(configs, fileName)}
+    (fileName)=>{onFileUpdated(configs, fileName)},
+    (fileName)=>{onFileRemoved(configs, fileName)}
   ); 
 
 }
