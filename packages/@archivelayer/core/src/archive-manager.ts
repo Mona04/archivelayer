@@ -1,11 +1,12 @@
 import fs from 'fs'
 
 import { getValue } from '@archivelayer/utils'
+import { ProcessedDocument, getMatchingDocumentType, processDocument } from './document-utils.js'
+import { ArchiveLayerConfigs, DocumentData, DocumentType } from './configs'
 import FileListCache from './archive-cache.js'
-import {ArchiveLayerConfigs, DocumentData, DocumentType } from './configs'
 
 const BASE_PATH = './.archivelayer/';
-const BASE_GEN_PATH = './.archivelayer/.generated/';
+const BASE_GEN_PATH = './.archivelayer/generated/';
 
 class ArchiveManager
 {
@@ -26,20 +27,40 @@ class ArchiveManager
     this.#makePackageJson();
     this.#makeIndex();
     this.#makeTypeExportFile(); 
+    this.#updateAll();
   }
 
-  updateFile(
-    docType : DocumentType,
-    filePath: string, 
-    metaData: {[key:string]:any}, 
-    content: string)
-  {
-    this.#updateFileCache(docType, filePath, metaData, content);
+  fileUpdated(fileName:string)
+  {    
+    const docType = getMatchingDocumentType(this.mConfigs.documentTypes, fileName);
+    if(docType == null) return;
+
+    const fileFullPath = `${this.mConfigs.sourcePath}/${fileName}`;
+
+    if(docType.contentType === 'mdx')
+    {
+      processDocument(
+        docType, fileName, fileFullPath, 
+        this.mConfigs.mdx?.remarkPlugins, 
+        this.mConfigs.mdx?.rehypePlugins,
+        d=>this.#updateFileCache(d));
+    }
+    else if(docType.contentType === 'markdown')
+    {
+      processDocument(
+        docType, fileName, fileFullPath, 
+        this.mConfigs.markdown?.remarkPlugins, 
+        this.mConfigs.markdown?.rehypePlugins,
+        d=>this.#updateFileCache(d));
+    }
   }
 
-  removeFile(docType: DocumentType, filePath: string)
+  fileRemoved(fileName:string)
   {
-    this.mFileListCache.remove(docType, filePath);
+    const docType = getMatchingDocumentType(this.mConfigs.documentTypes, fileName);
+    if(docType == null) return;
+  
+    this.mFileListCache.remove(docType, fileName);
     this.#updateDocumentIndex(docType);
   }
 
@@ -108,8 +129,8 @@ class ArchiveManager
 
     fileMJS += `export {${allFiless}}\n`
 
-    fs.writeFileSync(`${BASE_PATH}index.mjs`, fileMJS);
-    fs.writeFileSync(`${BASE_PATH}index.d.ts`, fileDTS);
+    fs.writeFileSync(`${BASE_GEN_PATH}index.mjs`, fileMJS);
+    fs.writeFileSync(`${BASE_GEN_PATH}index.d.ts`, fileDTS);
   }
 
   #makeTypeExportFile()
@@ -151,41 +172,41 @@ export type { MarkdownContent, MDXContent, RawDocumentData }\n`;
       typedts += docExport;
     }
 
-    this.#writeFile(`${BASE_PATH}types.d.ts`, typedts);
+    this.#writeFile(`${BASE_GEN_PATH}types.d.ts`, typedts);
   }
   
-  #updateFileCache(documentType: DocumentType, filePath: string, metaData: {[key:string]:any}, content: string)
+  #updateFileCache(data: ProcessedDocument)
   {
     const doc : DocumentData = {
-      _id: filePath,
+      _id: data.filePath,
       _raw: {
-        sourceFilePath: filePath,
-        sourceFileDir: filePath.substring(0, filePath.lastIndexOf('/')+1),
-        sourceFileName:  filePath.replace(/^.*[\\/]/, ''),
-        flattenedPath:  filePath.replace(/\.[^/.]+$/, "")
+        sourceFilePath:  data.filePath,
+        sourceFileDir:   data.filePath.substring(0, data.filePath.lastIndexOf('/')+1),
+        sourceFileName:  data.filePath.replace(/^.*[\\/]/, ''),
+        flattenedPath:   data.filePath.replace(/\.[^/.]+$/, "")
       }
     };
 
-    switch (documentType.contentType)
+    switch (data.documentType.contentType)
     {
       case 'markdown':
-        doc.body = {html: content};
+        doc.body = {html: data.content};
         break;
       case 'mdx':
-        doc.body = {code: content};
+        doc.body = {code: data.content};
         break;
     }
 
-    for(const fieldName in documentType.fields)
+    for(const fieldName in data.documentType.fields)
     {
-      const field = documentType.fields[fieldName];
-      const fieldData = metaData[fieldName]
+      const field = data.documentType.fields[fieldName];
+      const fieldData = data.metaData[fieldName]
       
       if(fieldData === undefined)
       {
         if(field?.required)
         {
-          console.warn(`${fieldName} is not exist in ${filePath}`);
+          console.warn(`${fieldName} is not exist in ${data.filePath}`);
         }
       }
       else
@@ -194,25 +215,25 @@ export type { MarkdownContent, MDXContent, RawDocumentData }\n`;
       }
     }
 
-    const targetPath = `${BASE_GEN_PATH}${documentType.name}/${doc._raw.flattenedPath.replace('/', '_')}.json`;
+    const targetPath = `${BASE_GEN_PATH}${data.documentType.name}/${doc._raw.flattenedPath.replace('/', '_')}.json`;
     
     this.#writeFile(targetPath, JSON.stringify(doc, null, 2));
-    this.mFileListCache.add(documentType, filePath, doc._raw.flattenedPath.replace('/', '_'));
-    this.#updateDocumentIndex(documentType);
+    this.mFileListCache.add(data.documentType, data.filePath, doc._raw.flattenedPath.replace('/', '_'));
+    this.#updateDocumentIndex(data.documentType);
   }
 
   #updateDocumentIndex(docType: DocumentType)
   {
     var file = "";
     var lastLine = `export const all${docType.name}s = [`;
-
+    
     const fileList = this.mFileListCache.get(docType);
     if(fileList != undefined)
     {
       for(const key in fileList)
       {
         const cache = fileList[key];
-        file += `import ${cache?.jsonPath} from '${cache?.jsonPath}.json' assert { type: 'json' }`
+        file += `import ${cache?.jsonPath} from './${cache?.jsonPath}.json' assert { type: 'json' } \n`
         lastLine += `${cache?.jsonPath}, `     
       }
   
@@ -223,6 +244,22 @@ export type { MarkdownContent, MDXContent, RawDocumentData }\n`;
     }
 
     this.#writeFile(`${BASE_GEN_PATH}/${docType.name}/_index.mjs`, file);
+  }
+
+  #updateAll()
+  {
+    const files = fs.readdirSync(
+      this.mConfigs.sourcePath!, 
+      {
+        encoding:'utf-8', 
+        withFileTypes: false, 
+        recursive: true
+      });
+
+    files.filter(f=>fs.lstatSync(`${this.mConfigs.sourcePath!}${f}`).isFile()).forEach(f=>{
+      f = f.replace('\\', '/');
+      this.fileUpdated(f);
+    });
   }
 
   #writeFile(path: string, obj: any){

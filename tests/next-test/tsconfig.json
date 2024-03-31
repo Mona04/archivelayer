@@ -23,21 +23,12 @@
     
     "baseUrl": "./src/",
     "paths": {
-      "@/public/*": [
-        "./public/*"
-      ],
-      "@/styles/*": [
-        "app/_styles/*"
+      "@/archivelayer/generated": [
+        "./.archivelayer/generated"
       ],
       "@/components/*": [
         "app/_components/*"
       ],
-      "@/context/*": [
-        "app/_context/*"
-      ],
-      "@/archivelayer/generated": [
-        "../.archivelayer/generated"
-      ]
     },
     "plugins": [
       {

@@ -26,8 +26,10 @@
     "rehype-pretty-code": "^0.10.0",
     "rehype-mathjax": "^4.0.3",
     "rehype-katex": "^6.0.3",
-    "shiki": "0.14.5"
+    "shiki": "0.14.5",
 
+    "@mdx-js/mdx": "3.0.1",
+    "@mdx-js/react": "3.0.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.10",
