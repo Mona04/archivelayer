@@ -17,6 +17,8 @@ import rehype    from 'remark-rehype'
 import stringfy  from 'rehype-stringify'
 import matter    from 'gray-matter'
 
+import {compile, compileSync} from '@mdx-js/mdx'
+
 export const isThisDocumentType = (docType:DocumentType, fileName: string) : boolean => {
   if(docType.filePathPattern === undefined) return true;
   if(isFilePathMatchPattern(fileName, docType.filePathPattern) == false) return false;
@@ -50,18 +52,22 @@ export function processDocument(
   callback: (data:ProcessedDocument) => void
   )
 {
-  fs.readFile(FileFullPath, (err, data)=>{
+  fs.readFile(FileFullPath, async (err, data)=>{
     if(err){
       console.log(err)
     }
     else{
+      if(docType.contentType === 'mdx')
+      {
+        var k = await compile(data, {remarkPlugins:remarkPlugins, rehypePlugins: rehypePlugins});
+        console.log(k);
+        return;
+      }
+
       var parsed = unified()
         .use(parse)
 
-      if(docType.contentType === 'mdx')
-      {
-        parsed = parsed.use([mdx]);
-      }
+  
 
       if(remarkPlugins != undefined)
       {

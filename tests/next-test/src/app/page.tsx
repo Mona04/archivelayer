@@ -1,7 +1,7 @@
 //import {allBlogMDPosts} from '@/archivelayer/generated/index.mjs'
 import {allBlogMDPosts, allBlogMDXPosts} from './../../.archivelayer/generated'
 import { MDXProvider, useMDXComponents } from '@mdx-js/react'
-import { } from '@mdx-js/mdx'
+
 
 export default function PostView() {
   var posts = allBlogMDPosts.map(e => {
