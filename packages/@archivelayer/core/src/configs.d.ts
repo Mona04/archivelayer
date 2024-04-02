@@ -8,14 +8,14 @@ export interface RawDocumentData{
   flattenedPath:  string
 }
 
-export interface MDXContent{
+export interface MDXBody{
   code: string
 }
-export interface MarkdownContent{
+export interface MarkdownBody{
   html: string
 }
 
-export type DocumentData = any & {_raw:RawDocumentData, body:MDXContent|MarkdownContent}
+export type DocumentData = any & {_raw:RawDocumentData, body:MDXBody|MarkdownBody}
 
 
 export type FieldType = 'string' | 'boolean' | 'date' | 'list';

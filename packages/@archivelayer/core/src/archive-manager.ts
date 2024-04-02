@@ -136,9 +136,9 @@ class ArchiveManager
   #makeTypeExportFile()
   {
     var typedts = `
-import type { MarkdownContent, MDXContent, RawDocumentData } from '@archivelayer/core'
+import type { MarkdownBody, MDXBody, RawDocumentData } from '@archivelayer/core'
 
-export type { MarkdownContent, MDXContent, RawDocumentData }\n`;
+export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
     for(const docTypeInput of this.mConfigs.documentTypes)
     {
       const docType = getValue(docTypeInput);    
@@ -148,7 +148,7 @@ export type { MarkdownContent, MDXContent, RawDocumentData }\n`;
       docExport += `  _id:  string,\n`
       docExport += `  _type: ${docType.name},\n`
       docExport += `  _raw: RawDocumentData,\n`
-      docExport += `  body: ${(docType.contentType === 'markdown' ? 'MarkdownContent' : 'MDXContent')},\n`
+      docExport += `  body: ${(docType.contentType === 'markdown' ? 'MarkdownBody' : 'MDXBody')},\n`
 
       for(const fieldName in docType.fields)
       {

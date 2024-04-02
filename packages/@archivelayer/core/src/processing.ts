@@ -24,5 +24,4 @@ export async function Startup()
     (fileName)=>{archiveManager.fileUpdated(fileName)},
     (fileName)=>{archiveManager.fileRemoved(fileName)}
   ); 
-
 }

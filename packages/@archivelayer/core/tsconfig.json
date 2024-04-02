@@ -2,10 +2,12 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "target": "ES6",
     "module": "esnext",
     "rootDir": "./src",
     "outDir": "./dist",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo.json"
+    "tsBuildInfoFile": "./dist/.tsbuildinfo.json",
+    "jsx": "preserve",
   },
   "include": ["./src", "src/configs.d.ts"],
   "exclude": [
