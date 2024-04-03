@@ -13,6 +13,7 @@
   "scripts": {
     "build": "tsc --build tsconfig.all.json",
     "dev": "npm run --prefix tests/next-test dev",
+    "test-build": "npm run --prefix tests/next-test build",
     "test": "npm run --prefix tests/jest-test test"
   },
   "workspaces": [

@@ -9,7 +9,7 @@ export const BlogMDPost = defineDocumentType(() => ({
   filePathPattern: `**/*.md`,
   contentType: 'markdown',
   fields: blogFields(),  
-  //computedFields: blogComputedFields(),
+  computedFields: blogComputedFields(),
 }))
 
 export const BlogMDXPost = defineDocumentType(() => ({
@@ -17,7 +17,7 @@ export const BlogMDXPost = defineDocumentType(() => ({
   filePathPattern: `**/*.mdx`,
   contentType: 'mdx',
   fields: blogFields(),
-  //computedFields: blogComputedFields(),
+  computedFields: blogComputedFields(),
 }))
 
 /**
@@ -44,6 +44,9 @@ const config = {
   }
 }
 
+/**
+ * @returns {import('archivelayer').FieldDefs}
+ **/
 function blogFields() {
   return {
     title:        { required: true,  type: 'string',  },
@@ -54,6 +57,15 @@ function blogFields() {
     isDirectory:  { required: false, type: 'boolean'},
   }
 }
+
+
+/**
+ * @returns {import('archivelayer').ComputedFieldDefs}
+ **/
+function blogComputedFields()  {
+  return {
+  url: { type: 'string', resolve: (post) => `/posts/${post._raw.flattenedPath}` }
+}}
 
 /**
  * // https://rehype-pretty-code.netlify.app/    

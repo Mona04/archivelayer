@@ -40,80 +40,100 @@ export interface ProcessedDocument {
   filePath: string,
   metaData: { [key:string]: any},
   content: string,
+  rawContent: string,
 }
 
-export function processDocument(
+export interface ProcessParams {
   docType: DocumentType,
   filePath: string,
   FileFullPath: string,
   remarkPlugins: unifiedd.Pluggable[]|undefined,
   rehypePlugins: unifiedd.Pluggable[]|undefined,
   callback: (data:ProcessedDocument) => void
-  )
+}
+
+async function processMarkdown(params:ProcessParams, data:Buffer)
 {
-  fs.readFile(FileFullPath, async (err, data)=>
+  const parsedContent = matter(data);
+  const metaData = parsedContent.data;
+  const content = parsedContent.content;
+
+  var parsed = unified()
+  .use(parse)
+
+  if(params.remarkPlugins != undefined)
   {
+    parsed = parsed.use(params.remarkPlugins)
+  }
+
+  var rehyped = parsed.use(rehype);
+
+  if(params.rehypePlugins != undefined)
+  {
+    rehyped = rehyped.use(params.rehypePlugins);
+  }
+
+  var htmled = rehyped.use(stringfy);
+
+  htmled.process(content, (err, data)=>{
     if(err){
       console.log(err)
     }
-    else
-    {
-      const parsedContent = matter(data);
-      const metaData = parsedContent.data;
-      const content = parsedContent.content;
+    else{
+      params.callback({
+        documentType  : params.docType, 
+        filePath      : params.filePath, 
+        rawContent    : content,
+        metaData      : metaData, 
+        content       : data!.toString()
+      });
+    }
+  });
+}
 
-      if(docType.contentType === 'mdx')
-      {
-        const compiled = await compile(content, { 
-          outputFormat: 'function-body',
-          development: false,
-          remarkPlugins: remarkPlugins,
-          rehypePlugins: rehypePlugins});
-        callback({
-          documentType: docType, 
-          filePath: filePath, 
-          metaData: metaData, 
-          content: compiled.value.toString()
-        });
+async function processMDX(params:ProcessParams, data:Buffer)
+{
+  const parsedContent = matter(data);
+  const metaData = parsedContent.data;
+  const content = parsedContent.content;
+
+  const compiled = await compile(content, { 
+    outputFormat: 'function-body',
+    development: false,
+    remarkPlugins: params.remarkPlugins,
+    rehypePlugins: params.rehypePlugins});
+  params.callback({
+    documentType : params.docType, 
+    filePath     : params.filePath, 
+    rawContent   : content,
+    metaData     : metaData, 
+    content      : compiled.value.toString(),
+  });  
+}
+
+export function processDocument(params:ProcessParams)
+{
+  fs.readFile(params.FileFullPath, async (err, data)=>
+  {
+    try{   
+      if(err){
+        console.log(err)
       }
       else
       {
-        var parsed = unified()
-        .use(parse)
-
-        if(remarkPlugins != undefined)
+        if(params.docType.contentType === 'mdx')
         {
-          parsed = parsed.use(remarkPlugins)
+          await processMDX(params, data);
         }
-
-        var rehyped = parsed.use(rehype);
-
-        if(rehypePlugins != undefined)
+        else
         {
-          rehyped = rehyped.use(rehypePlugins);
+          await processMarkdown(params, data);
         }
-      
-        var htmled = rehyped.use(stringfy);
-      
-        try{
-          htmled.process(content, (err, data)=>{
-            if(err){
-              console.log(err)
-            }
-            else{
-              callback({
-                documentType: docType, 
-                filePath: filePath, 
-                metaData: metaData, 
-                content: data!.toString()
-              });
-            }
-          });
-        }
-        catch (err){
-          console.log(err)
-        }
-      }
+      }       
+    }
+    catch(e){
+      console.error(`Failed to processing document ${params.FileFullPath}`);
+      console.error(e);
     }
   });
 }

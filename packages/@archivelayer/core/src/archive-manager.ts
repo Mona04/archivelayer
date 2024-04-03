@@ -40,18 +40,26 @@ class ArchiveManager
     if(docType.contentType === 'mdx')
     {
       processDocument(
-        docType, fileName, fileFullPath, 
-        this.mConfigs.mdx?.remarkPlugins, 
-        this.mConfigs.mdx?.rehypePlugins,
-        d=>this.#updateFileCache(d));
+        {
+          docType:docType,
+          filePath: fileName,
+          FileFullPath: fileFullPath,
+          remarkPlugins: this.mConfigs.mdx?.remarkPlugins,
+          rehypePlugins: this.mConfigs.mdx?.rehypePlugins,
+          callback: d=>this.#updateFileCache(d),
+        });
     }
     else if(docType.contentType === 'markdown')
     {
       processDocument(
-        docType, fileName, fileFullPath, 
-        this.mConfigs.markdown?.remarkPlugins, 
-        this.mConfigs.markdown?.rehypePlugins,
-        d=>this.#updateFileCache(d));
+        {
+          docType:docType,
+          filePath: fileName,
+          FileFullPath: fileFullPath,
+          remarkPlugins: this.mConfigs.markdown?.remarkPlugins,
+          rehypePlugins: this.mConfigs.markdown?.rehypePlugins,
+          callback: d=>this.#updateFileCache(d),
+        });
     }
   }
 
@@ -153,10 +161,29 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
       for(const fieldName in docType.fields)
       {
         const field = docType.fields[fieldName];
+
         switch(field?.type)
         {
           case 'list':
             docExport += `  ${fieldName}: ${field.of?.type}[],\n`            
+            break;
+          case 'date':
+            docExport += `  ${fieldName}: Date,\n`            
+            break;
+          default:
+            docExport += `  ${fieldName}: ${field?.type},\n`;            
+            break;
+        }
+      }
+
+      for(const fieldName in docType.computedFields)
+      {
+        const field = docType.computedFields[fieldName];
+        
+        switch(field?.type)
+        {
+          case 'list':
+            docExport += `  ${fieldName}: any[],\n`            
             break;
           case 'date':
             docExport += `  ${fieldName}: Date,\n`            
@@ -175,6 +202,9 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
     this.#writeFile(`${BASE_GEN_PATH}types.d.ts`, typedts);
   }
   
+  /**
+   * Update a file.
+   */
   #updateFileCache(data: ProcessedDocument)
   {
     const doc : DocumentData = {
@@ -183,7 +213,8 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
         sourceFilePath:  data.filePath,
         sourceFileDir:   data.filePath.substring(0, data.filePath.lastIndexOf('/')+1),
         sourceFileName:  data.filePath.replace(/^.*[\\/]/, ''),
-        flattenedPath:   data.filePath.replace(/\.[^/.]+$/, "")
+        flattenedPath:   data.filePath.replace(/\.[^/.]+$/, ""),
+        source:          data.rawContent
       }
     };
 
@@ -215,6 +246,13 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
       }
     }
 
+    for(const fieldName in data.documentType.computedFields)
+    {
+      const field = data.documentType.computedFields[fieldName];
+      
+      doc[fieldName] = field?.resolve(doc);
+    }
+
     const targetPath = `${BASE_GEN_PATH}${data.documentType.name}/${doc._raw.flattenedPath.replace('/', '_')}.json`;
     
     this.#writeFile(targetPath, JSON.stringify(doc, null, 2));
@@ -222,6 +260,9 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
     this.#updateDocumentIndex(data.documentType);
   }
 
+  /**
+   * Update [DocumentType]/index.js.
+   */
   #updateDocumentIndex(docType: DocumentType)
   {
     var file = "";
@@ -246,6 +287,9 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
     this.#writeFile(`${BASE_GEN_PATH}/${docType.name}/_index.mjs`, file);
   }
 
+  /**
+   * update all files in the base directory.
+   */
   #updateAll()
   {
     const files = fs.readdirSync(

@@ -5,8 +5,8 @@
   "type": "module",
   "main": "next.config.js",
   "scripts": {
-    "dev": "concurrently \"archivelayer build\" \"next dev -p 4000\"",
-    "build": "next build & next-image-export-optimizer"
+    "dev": "concurrently \"archivelayer dev\" \"next dev -p 4000\"",
+    "build": "archivelayer build & next build"
   },
   "workspaces": [
     "../../packages/*"

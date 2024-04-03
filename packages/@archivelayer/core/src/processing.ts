@@ -25,3 +25,13 @@ export async function Startup()
     (fileName)=>{archiveManager.fileRemoved(fileName)}
   ); 
 }
+
+export async function Build()
+{
+  const configs = await requireConfigs<ArchiveLayerConfigs>();
+  
+  if(configs.sourcePath === undefined) return;
+  
+  const archiveManager = new ArchiveManager();
+  archiveManager.initialize(configs);  
+}

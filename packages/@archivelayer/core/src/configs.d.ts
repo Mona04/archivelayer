@@ -5,7 +5,8 @@ export interface RawDocumentData{
   sourceFilePath: string,
   sourceFileDir:  string,
   sourceFileName: string,
-  flattenedPath:  string
+  flattenedPath:  string,
+  source:         string,
 }
 
 export interface MDXBody{
@@ -18,7 +19,9 @@ export interface MarkdownBody{
 export type DocumentData = any & {_raw:RawDocumentData, body:MDXBody|MarkdownBody}
 
 
+
 export type FieldType = 'string' | 'boolean' | 'date' | 'list';
+
 export interface FieldDef {
   required: boolean,
   type: FieldType,
@@ -28,11 +31,20 @@ export interface FieldDefs {
   [fieldName:string]: FieldDef
 }
 
+export interface ComputedFieldDef {
+  type: FieldType,
+  resolve: (data:DocumentData)=>any
+}
+export interface ComputedFieldDefs {
+  [fieldName:string]: ComputedFieldDef
+}
+
 export interface DocumentType {
-  name: string,
-  contentType?  : 'markdown' | 'mdx' | undefined,
+  name             : string,
+  contentType?     : 'markdown' | 'mdx' | undefined,
   filePathPattern? : string,
-  fields: FieldDefs
+  fields           : FieldDefs,
+  computedFields   : ComputedFieldDefs
 }
 
 export type MarkdownOptions = {
@@ -46,8 +58,8 @@ export type MDXOptions = {
 }
 
 export interface ArchiveLayerConfigs {
-    sourcePath    : string | undefined,
-    documentTypes : (DocumentType | {():DocumentType})[],
-    markdown?: MarkdownOptions,
-    mdx?: MDXOptions
-  }
+  sourcePath    : string | undefined,
+  documentTypes : (DocumentType | {():DocumentType})[],
+  markdown?     : MarkdownOptions,
+  mdx?          : MDXOptions
+}
