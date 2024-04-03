@@ -1,7 +1,7 @@
 {
   "name": "archivelayer",
   "description": "content builder.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "author": {
     "name": "Mona04",
@@ -41,8 +41,8 @@
     "./*"
   ],
   "dependencies": {
-    "@archivelayer/utils": "file:../@archivelayer/utils",
-    "@archivelayer/core": "file:../@archivelayer/core",
+    "@archivelayer/utils": "0.0.3",
+    "@archivelayer/core": "0.0.3",
 
     "commander": "12.0.0",
     "typescript": "5.3.3",

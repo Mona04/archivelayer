@@ -3,7 +3,7 @@ import * as runtime from 'react/jsx-runtime'
 import { Fragment, useState, useEffect } from 'react';
 import { MDXModule } from '@mdx-js/mdx/lib/evaluate';
 
-export const useMDXComponent = (props:{code:string}) => {
+export const useMDXComponent = (props:{code:string, baseUrl:string}) => {
   const [mdxModule, setMdxModule] = useState<MDXModule>()
   const Content = mdxModule ? mdxModule.default : Fragment
   
@@ -12,8 +12,8 @@ export const useMDXComponent = (props:{code:string}) => {
       var a = await run(props.code, 
       {
         ...runtime, 
-        baseUrl: import.meta.url, 
-        Fragment: Fragment
+        baseUrl: props.baseUrl,//import.meta.url, 
+        Fragment: Fragment,        
       });
       setMdxModule(a)
     })()

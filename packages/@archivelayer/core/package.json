@@ -17,7 +17,7 @@
     "test":    "echo No tests yet"
   },
   "dependencies": {
-    "@archivelayer/utils": "0.0.3",
+    "@archivelayer/utils": "file:../@archivelayer/core",
     "fs": "^0.0.1-security",
     "gray-matter": "4.0.3",
     "unified": "11.0.4",

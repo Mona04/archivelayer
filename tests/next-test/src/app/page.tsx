@@ -1,6 +1,6 @@
 'use client'
 import {allBlogMDPosts, allBlogMDXPosts} from './../../.archivelayer/generated'
-import {useMDXComponent} from 'archivelayer/hooks'
+import {useMDXComponent2} from 'archivelayer/hooks'
 
 
 export default  function PostView() {
@@ -10,7 +10,7 @@ export default  function PostView() {
   var mdxposts = allBlogMDXPosts.map( e=>{
     return <div key={e._id}>
       <p>{e.url}</p>
-      {useMDXComponent({code:e.body.code})}
+      {useMDXComponent2({code:e.body.code})}
     </div>
   });
   return (
