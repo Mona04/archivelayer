@@ -12,7 +12,7 @@
     "../../packages/*"
   ],
   "dependencies": {
-    "archivelayer": "file:../../packages/archivelayer",
+    "archivelayer"       : "file:../../packages/archivelayer",
     "next-component-test": "file:../next-component-test",
 
     "fs": "^0.0.1-security",

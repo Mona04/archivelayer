@@ -1,6 +1,6 @@
 {
   "name": "@archivelayer/core",
-  "version": "0.0.3",
+  "version": "0.0.10",
   "license": "MIT",
   "type": "module",
   
@@ -17,7 +17,7 @@
     "test":    "echo No tests yet"
   },
   "dependencies": {
-    "@archivelayer/utils": "file:../@archivelayer/core",
+    "@archivelayer/utils": "file:../utils",
     "fs": "^0.0.1-security",
     "gray-matter": "4.0.3",
     "unified": "11.0.4",

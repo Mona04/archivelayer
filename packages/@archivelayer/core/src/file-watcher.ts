@@ -20,10 +20,11 @@ export default class FileWatcher
   }
 
   // https://stackoverflow.com/questions/67244227/watch-files-and-folders-recursively-with-node-js-also-get-info-whenever-change
-  #watchCallback : fs.WatchListener<string> = (eventName, fileName) => {
+  #watchCallback : fs.WatchListener<string> = (eventName, fileName) =>
+  {
     if(fileName === null) return;
-    fileName = fileName.replace('\\', '/');
-
+    fileName = fileName.replace(/\\/gi, '/');
+  
     var path = `${this.mBasePath}/${fileName}`;
 
     if(fs.existsSync(path) == false){

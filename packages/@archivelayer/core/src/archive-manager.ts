@@ -253,10 +253,11 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
       doc[fieldName] = field?.resolve(doc);
     }
 
-    const targetPath = `${BASE_GEN_PATH}${data.documentType.name}/${doc._raw.flattenedPath.replace('/', '_')}.json`;
-    
+    const jsonFileName = `${doc._raw.flattenedPath.replace(/\//gi, '_')}`;
+    const targetPath = `${BASE_GEN_PATH}${data.documentType.name}/${jsonFileName}.json`;
+
     this.#writeFile(targetPath, JSON.stringify(doc, null, 2));
-    this.mFileListCache.add(data.documentType, data.filePath, doc._raw.flattenedPath.replace('/', '_'));
+    this.mFileListCache.add(data.documentType, data.filePath, jsonFileName);
     this.#updateDocumentIndex(data.documentType);
   }
 
@@ -299,9 +300,9 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
         withFileTypes: false, 
         recursive: true
       });
-
+ 
     files.filter(f=>fs.lstatSync(`${this.mConfigs.sourcePath!}${f}`).isFile()).forEach(f=>{
-      f = f.replace('\\', '/');
+      f = f.replace(/\\/gi, '/');
       this.fileUpdated(f);
     });
   }

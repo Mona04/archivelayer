@@ -3,12 +3,10 @@ import {
 } from '@archivelayer/utils'
 
 import {
-  ArchiveLayerConfigs
-} from './configs'
-
-import ArchiveManager from './archive-manager.js'
-import FileWatcher from './file-watcher.js'
-
+  ArchiveLayerConfigs, 
+  ArchiveManager, 
+  FileWatcher
+} from '@archivelayer/core'
 
 export async function Startup() 
 {
@@ -31,7 +29,7 @@ export async function Build()
   const configs = await requireConfigs<ArchiveLayerConfigs>();
   
   if(configs.sourcePath === undefined) return;
-  
+
   const archiveManager = new ArchiveManager();
   archiveManager.initialize(configs);  
 }
