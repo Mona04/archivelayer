@@ -1,2 +1,2 @@
 export * from './useMDXComponent'
-export * from './useMDXComponent2'
+export * from './useMDXComponentAsync'
