@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import {Command} from 'commander'
-import {Startup, Build} from '@archivelayer/core'
+import {Startup, Build} from '../dist/processing.js'
 
 const program = new Command();
 

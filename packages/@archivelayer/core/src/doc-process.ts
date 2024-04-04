@@ -111,13 +111,25 @@ async function processMDX(params:ProcessParams, data:Buffer)
   });  
 }
 
-export function processDocument(params:ProcessParams)
+function waitFor(condition:()=>boolean, delay:number) {
+
+  const poll = (resolve:any) => {
+    if(condition()) resolve();
+    else setTimeout(_ => poll(resolve), delay);
+  }
+
+  return new Promise(poll);
+}
+
+export async function processDocument(params:ProcessParams)
 {
+  let finished = false;
+  
   fs.readFile(params.FileFullPath, async (err, data)=>
   {
     try{   
       if(err){
-        console.log(err)
+        console.error(err)
       }
       else
       {
@@ -129,11 +141,16 @@ export function processDocument(params:ProcessParams)
         {
           await processMarkdown(params, data);
         }
-      }       
+      }
     }
     catch(e){
-      console.error(`Failed to processing document ${params.FileFullPath}`);
+      console.error(`====== Failed to processing document ${params.FileFullPath} ======`);
       console.error(e);
     }
+    finally{
+      finished = true;
+    }
   });
+
+  await waitFor(()=>finished==true, 300);
 }

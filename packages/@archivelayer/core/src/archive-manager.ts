@@ -1,14 +1,14 @@
 import fs from 'fs'
 
 import { getValue } from '@archivelayer/utils'
-import { ProcessedDocument, getMatchingDocumentType, processDocument } from './document-utils.js'
-import { ArchiveLayerConfigs, DocumentData, DocumentType } from './configs'
+import { ProcessedDocument, getMatchingDocumentType, processDocument } from './doc-process.js'
 import FileListCache from './archive-cache.js'
+import { ArchiveLayerConfigs, DocumentData, DocumentType } from './configs'
 
 const BASE_PATH = './.archivelayer/';
 const BASE_GEN_PATH = './.archivelayer/generated/';
 
-class ArchiveManager
+export class ArchiveManager
 {
   mConfigs: ArchiveLayerConfigs;
   mFileListCache: FileListCache;
@@ -26,11 +26,10 @@ class ArchiveManager
     this.#checkBaseDirectory();    
     this.#makePackageJson();
     this.#makeIndex();
-    this.#makeTypeExportFile(); 
-    this.#updateAll();
+    this.#makeTypeExportFile();     
   }
 
-  fileUpdated(fileName:string)
+  async fileUpdated(fileName:string)
   {    
     const docType = getMatchingDocumentType(this.mConfigs.documentTypes, fileName);
     if(docType == null) return;
@@ -39,7 +38,7 @@ class ArchiveManager
 
     if(docType.contentType === 'mdx')
     {
-      processDocument(
+      await processDocument(
         {
           docType:docType,
           filePath: fileName,
@@ -51,7 +50,7 @@ class ArchiveManager
     }
     else if(docType.contentType === 'markdown')
     {
-      processDocument(
+      await processDocument(
         {
           docType:docType,
           filePath: fileName,
@@ -288,34 +287,7 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
     this.#writeFile(`${BASE_GEN_PATH}/${docType.name}/_index.mjs`, file);
   }
 
-  /**
-   * update all files in the base directory.
-   */
-  #updateAll()
-  {
-    const files = fs.readdirSync(
-      this.mConfigs.sourcePath!, 
-      {
-        encoding:'utf-8', 
-        withFileTypes: false, 
-        recursive: true
-      });
- 
-    files.filter(f=>fs.lstatSync(`${this.mConfigs.sourcePath!}${f}`).isFile()).forEach(f=>{
-      f = f.replace(/\\/gi, '/');
-      this.fileUpdated(f);
-    });
-  }
-
   #writeFile(path: string, obj: any){
-    fs.writeFile(path, obj, 
-      (e)=>{
-        if(e != null){
-          console.log(`Writing ${path} is failed. ${e}`);
-        }
-      }
-    );
+    fs.writeFileSync(path, obj);
   }
 }
-
-export default ArchiveManager;

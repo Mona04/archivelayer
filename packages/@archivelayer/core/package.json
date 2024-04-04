@@ -1,12 +1,12 @@
 {
   "name": "@archivelayer/core",
-  "version": "0.0.10",
+  "version": "0.0.15",
   "license": "MIT",
   "type": "module",
   
   "main": "dist/index.js",
   "exports": "./dist/index.js",
-  "types": "./src/configs.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "./dist/**/*.{js,ts,map}",
     "./src",

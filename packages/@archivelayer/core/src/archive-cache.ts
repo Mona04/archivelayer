@@ -1,5 +1,9 @@
 import { DocumentType } from './configs'
 
+/**
+ * documentType 마다 현재 파일 리스트를 관리함. 
+ * 그래서 export 등의 파일 작성에 사용.
+ */
 class FileListCache
 {
   mFileDict: { [documentType:string]: {[key:string]: {jsonPath:string}}, };

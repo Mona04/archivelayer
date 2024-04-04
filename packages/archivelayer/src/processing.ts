@@ -1,12 +1,15 @@
 import {
-  requireConfigs
+  requireConfigs, 
+  FileWatcher,
+  listFiles
 } from '@archivelayer/utils'
 
 import {
   ArchiveLayerConfigs, 
   ArchiveManager, 
-  FileWatcher
 } from '@archivelayer/core'
+
+import chalk from 'chalk';
 
 export async function Startup() 
 {
@@ -31,5 +34,10 @@ export async function Build()
   if(configs.sourcePath === undefined) return;
 
   const archiveManager = new ArchiveManager();
-  archiveManager.initialize(configs);  
+  archiveManager.initialize(configs);
+
+  listFiles(
+    configs.sourcePath, 
+    async (fileName)=>{await archiveManager.fileUpdated(fileName)},
+    (delta)=>{ console.log(chalk.green(`Finish to build archives !!!! It takes ${delta} m/s\n\n`))} );
 }
