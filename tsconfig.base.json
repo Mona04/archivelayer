@@ -18,13 +18,6 @@
     // needed to import Contentlayer package version
     "resolveJsonModule": true,
     "target": "ES2020",
-    "plugins": [{ "transform": "@effect-ts/tracing-plugin" }],
-    "paths": {
-      "@contentlayer/utils/*":        ["./@contentlayer/utils/src/*"],
-      "@contentlayer/source-files/*": ["./@contentlayer/source-files/src/*"],
-      "@contentlayer/*":              ["./@contentlayer/*/src"],
-      "contentlayer/*":               ["./contentlayer/src/*"],
-      "contentlayer":                 ["./contentlayer/src"]
-    }
+    "plugins": [{ "transform": "@effect-ts/tracing-plugin" }]
   }
 }
