@@ -1,7 +1,7 @@
 {
   "name": "archivelayer",
   "description": "archivelayer.",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "license": "MIT",
   "author": {
     "name": "Mona04",
@@ -41,8 +41,8 @@
     "./*"
   ],
   "dependencies": {
-    "@archivelayer/utils" : "^0.0.15",
-    "@archivelayer/core"  : "^0.0.15",
+    "@archivelayer/utils" : "^0.0.17",
+    "@archivelayer/core"  : "^0.0.17",
 
     "typescript": "^5.3.3",
     "react": "^18.2.0",
