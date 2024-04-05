@@ -6,9 +6,9 @@ import {Startup, Build} from '../dist/processing.js'
 const program = new Command();
 
 program.command("dev")
-  .action(Startup);
+  .action(()=>Startup("C:/Users/user/Desktop/study/blog/archivelayer/tests/next-test/src/"));
 program.command("build")
-  .action(Build);
+  .action(()=>Build("C:/Users/user/Desktop/study/blog/archivelayer/tests/next-test/src/"));
 program
   .version("0.0.1", "-v, --version")
   .name("archivelayer")

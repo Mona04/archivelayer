@@ -11,9 +11,9 @@ import {
 
 import chalk from 'chalk';
 
-export async function Startup() 
+export async function Startup(baseFolder?:string|null) 
 {
-  const configs = await requireConfigs<ArchiveLayerConfigs>();
+  const configs = await requireConfigs<ArchiveLayerConfigs>(baseFolder);
   
   if(configs.sourcePath === undefined) return;
   
@@ -27,9 +27,9 @@ export async function Startup()
   ); 
 }
 
-export async function Build()
+export async function Build(baseFolder?:string|null)
 {
-  const configs = await requireConfigs<ArchiveLayerConfigs>();
+  const configs = await requireConfigs<ArchiveLayerConfigs>(baseFolder);
   
   if(configs.sourcePath === undefined) return;
 

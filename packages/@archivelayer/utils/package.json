@@ -1,6 +1,6 @@
 {
   "name": "@archivelayer/utils",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "license": "MIT",
   "type": "module",
   
@@ -19,8 +19,7 @@
   },
   "dependencies": {
     "fs": "^0.0.1-security",
-    "minimatch": "9.0.3",
-    "unified": "11.0.4"  
+    "minimatch": "9.0.3"
   },
   "devDependencies": {
     
