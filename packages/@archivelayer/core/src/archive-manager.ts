@@ -252,7 +252,7 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
       doc[fieldName] = field?.resolve(doc);
     }
 
-    const jsonFileName = `${doc._raw.flattenedPath.replace(/\//gi, '_')}`;
+    const jsonFileName = `${doc._raw.flattenedPath.replace(/\//gi, '_').replace(/-/gi, '_')}`;
     const targetPath = `${BASE_GEN_PATH}${data.documentType.name}/${jsonFileName}.json`;
 
     this.#writeFile(targetPath, JSON.stringify(doc, null, 2));

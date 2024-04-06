@@ -1,6 +1,6 @@
 {
   "name": "@archivelayer/utils",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "license": "MIT",
   "type": "module",
   
@@ -14,7 +14,6 @@
   ],
   
   "scripts": {
-    "tmp":     "env",
     "test":    "echo No tests yet"
   },
   "dependencies": {
@@ -22,7 +21,6 @@
     "minimatch": "9.0.3"
   },
   "devDependencies": {
-    
   }
 }
   
