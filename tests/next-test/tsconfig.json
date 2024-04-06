@@ -27,7 +27,7 @@
         "./.archivelayer/generated"
       ],
       "@/components/*": [
-        "app/_components/*"
+        "./src/_components"
       ],
     },
     "plugins": [
