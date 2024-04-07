@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import {minimatch} from 'minimatch'
 
 export function isFilePathMatchPattern(filePath:string, pattern:string) {
@@ -81,3 +82,18 @@ export const listFiles = async (
 
   finishCallback(currentTime - lastFrameTime);
 };
+
+export function findFile(findpath:string, filename:string) 
+{
+  findpath = path.normalize(findpath).replace(/\//gi, '\\');
+
+  for(let i = 0; i < 20; i++)
+  {
+    const cur = path.join(findpath, filename)
+    if(fs.existsSync(cur))
+    {
+      return cur;
+    }
+    findpath = findpath.substring(0, findpath.lastIndexOf('\\'));
+  }
+}

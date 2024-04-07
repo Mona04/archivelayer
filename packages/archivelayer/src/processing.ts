@@ -1,10 +1,10 @@
 import {
-  requireConfigs, 
   FileWatcher,
   listFiles
 } from '@archivelayer/utils'
 
-import {
+import {  
+  requireConfigs, 
   ArchiveLayerConfigs, 
   ArchiveManager, 
 } from '@archivelayer/core'
@@ -13,8 +13,8 @@ import chalk from 'chalk';
 
 export async function Startup(baseFolder?:string|null) 
 {
-  const configs = await requireConfigs<ArchiveLayerConfigs>(baseFolder);
-  
+  const configs = await requireConfigs(baseFolder);
+
   if(configs.sourcePath === undefined) return;
   
   const archiveManager = new ArchiveManager();
@@ -29,7 +29,7 @@ export async function Startup(baseFolder?:string|null)
 
 export async function Build(baseFolder?:string|null)
 {
-  const configs = await requireConfigs<ArchiveLayerConfigs>(baseFolder);
+  const configs = await requireConfigs(baseFolder);
   
   if(configs.sourcePath === undefined) return;
 

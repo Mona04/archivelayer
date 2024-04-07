@@ -29,6 +29,7 @@ export const BlogMDXPost = defineDocumentType(() => ({
  **/
 const config = {
   sourcePath: "./_content/",
+  outputPath: "./",
   documentTypes: [BlogMDPost, BlogMDXPost],
   mdx:{ 
     remarkPlugins: [ 

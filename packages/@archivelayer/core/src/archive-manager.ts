@@ -5,13 +5,13 @@ import { ProcessedDocument, getMatchingDocumentType, processDocument } from './d
 import FileListCache from './archive-cache.js'
 import { ArchiveLayerConfigs, DocumentData, DocumentType } from './configs'
 
-const BASE_PATH = './.archivelayer/';
-const BASE_GEN_PATH = './.archivelayer/generated/';
 
 export class ArchiveManager
 {
   mConfigs: ArchiveLayerConfigs;
   mFileListCache: FileListCache;
+  mBASE_PATH = './.archivelayer/';
+  mBASE_GEN_PATH = './.archivelayer/generated/';
 
   constructor()
   {
@@ -23,10 +23,13 @@ export class ArchiveManager
   {
     this.mConfigs = configs;
 
+    this.mBASE_PATH     = (configs.outputPath ?? './') + '.archivelayer/';
+    this.mBASE_GEN_PATH = (configs.outputPath ?? './') + '.archivelayer/generated/';
+
     this.#checkBaseDirectory();    
     this.#makePackageJson();
     this.#makeIndex();
-    this.#makeTypeExportFile();     
+    this.#makeTypeExportFile();
   }
 
   async fileUpdated(fileName:string)
@@ -73,22 +76,22 @@ export class ArchiveManager
 
   #checkBaseDirectory()
   {
-    if(fs.existsSync(BASE_PATH) == false)
+    if(fs.existsSync(this.mBASE_PATH) == false)
     {
-      fs.mkdirSync(BASE_PATH);
+      fs.mkdirSync(this.mBASE_PATH);
     }
-    if(fs.existsSync(BASE_GEN_PATH) == false)
+    if(fs.existsSync(this.mBASE_GEN_PATH) == false)
     {
-      fs.mkdirSync(BASE_GEN_PATH);
+      fs.mkdirSync(this.mBASE_GEN_PATH);
     }
 
     // document type folder intialize
     for(var docTypeInput of this.mConfigs.documentTypes)
     {    
       const docType = getValue(docTypeInput);
-      if(fs.existsSync(`${BASE_GEN_PATH}${docType.name}`) == false)
+      if(fs.existsSync(`${this.mBASE_GEN_PATH}${docType.name}`) == false)
       {
-        fs.mkdirSync(`${BASE_GEN_PATH}${docType.name}`);
+        fs.mkdirSync(`${this.mBASE_GEN_PATH}${docType.name}`);
       }
     }    
   }
@@ -109,9 +112,9 @@ export class ArchiveManager
   }
 }`
 
-    if(fs.existsSync(`${BASE_PATH}package.json`) == false)
+    if(fs.existsSync(`${this.mBASE_PATH}package.json`) == false)
     {
-      fs.writeFileSync(`${BASE_PATH}package.json`, packagejson);
+      fs.writeFileSync(`${this.mBASE_PATH}package.json`, packagejson);
     }
   }
 
@@ -136,8 +139,8 @@ export class ArchiveManager
 
     fileMJS += `export {${allFiless}}\n`
 
-    fs.writeFileSync(`${BASE_GEN_PATH}index.mjs`, fileMJS);
-    fs.writeFileSync(`${BASE_GEN_PATH}index.d.ts`, fileDTS);
+    fs.writeFileSync(`${this.mBASE_GEN_PATH}index.mjs`, fileMJS);
+    fs.writeFileSync(`${this.mBASE_GEN_PATH}index.d.ts`, fileDTS);
   }
 
   #makeTypeExportFile()
@@ -198,7 +201,7 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
       typedts += docExport;
     }
 
-    this.#writeFile(`${BASE_GEN_PATH}types.d.ts`, typedts);
+    this.#writeFile(`${this.mBASE_GEN_PATH}types.d.ts`, typedts);
   }
   
   /**
@@ -253,7 +256,7 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
     }
 
     const jsonFileName = `${doc._raw.flattenedPath.replace(/\//gi, '_').replace(/-/gi, '_')}`;
-    const targetPath = `${BASE_GEN_PATH}${data.documentType.name}/${jsonFileName}.json`;
+    const targetPath = `${this.mBASE_GEN_PATH}${data.documentType.name}/${jsonFileName}.json`;
 
     this.#writeFile(targetPath, JSON.stringify(doc, null, 2));
     this.mFileListCache.add(data.documentType, data.filePath, jsonFileName);
@@ -284,7 +287,7 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
       }
     }
 
-    this.#writeFile(`${BASE_GEN_PATH}/${docType.name}/_index.mjs`, file);
+    this.#writeFile(`${this.mBASE_GEN_PATH}/${docType.name}/_index.mjs`, file);
   }
 
   #writeFile(path: string, obj: any){

@@ -58,7 +58,8 @@ export type MDXOptions = {
 }
 
 export interface ArchiveLayerConfigs {
-  sourcePath    : string | undefined,
+  sourcePath    : string,
+  outputPath?   : string | undefined,
   documentTypes : (DocumentType | {():DocumentType})[],
   markdown?     : MarkdownOptions,
   mdx?          : MDXOptions
