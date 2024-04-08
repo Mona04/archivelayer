@@ -25,7 +25,8 @@ export type FieldType = 'string' | 'boolean' | 'date' | 'list';
 export interface FieldDef {
   required: boolean,
   type: FieldType,
-  of: undefined | { type: FieldType}
+  of?: undefined | { type: FieldType} // list 에서만 사용.
+  default? : any // 기본값.
 }
 export interface FieldDefs {
   [fieldName:string]: FieldDef

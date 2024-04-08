@@ -254,10 +254,14 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
       
       if(fieldData === undefined)
       {
-        if(field?.required)
+        if(field?.default)
+        {
+          doc[fieldName] = field?.default;   
+        }
+        else if(field?.required)
         {
           console.warn(`${fieldName} is not exist in ${data.filePath}`);
-        }
+        }        
       }
       else
       {

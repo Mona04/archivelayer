@@ -65,7 +65,7 @@ function blogFields() {
     description:  { required: false, type: 'string',   },
     tags:         { required: false, type: 'list', of: {type: 'string'} },
     thumbnail:    { required: false, type: 'string'},
-    isDirectory:  { required: false, type: 'boolean'},
+    useSearch:    { required: false, type: 'boolean', default: true},
   }
 }
 

@@ -11,10 +11,11 @@ export default  function PostView() {
       {await useMDXComponentAsync({code:e.body.code, baseUrl: import.meta.url}, { "year": 123 })}
     </div>
   });
+
   return (
     <>
       <h1>Archive Layer Test</h1>
-      {allBlogMDXPosts.map(t=><div>{t.title}</div>)}
+      {allBlogMDPosts.map((t,i)=><div key={i}>{t.useSearch ? "true" : "false"}</div>)}
     </>
   )
 }
