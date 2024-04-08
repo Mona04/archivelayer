@@ -14,7 +14,7 @@ export default  function PostView() {
   return (
     <>
       <h1>Archive Layer Test</h1>
-      {mdxposts}
+      {allBlogMDXPosts.map(t=><div>{t.title}</div>)}
     </>
   )
 }

@@ -74,6 +74,22 @@ export class ArchiveManager
     this.#updateDocumentIndex(docType);
   }
 
+  /**
+   * parsing 하지 않고 export index 에 넣을 파일 등록용 api.
+   * @param fileName 
+   * @returns 
+   */
+  registFile(fileName:string)
+  {
+    const docType = getMatchingDocumentType(this.mConfigs.documentTypes, fileName);
+    if(docType == null) return;
+
+    const flattenedPath = fileName.replace(/\.[^/.]+$/, "")
+    const jsonFileName = `${flattenedPath.replace(/\//gi, '_').replace(/-/gi, '_')}`;
+
+    this.mFileListCache.add(docType, fileName, jsonFileName);
+  }
+
   #checkBaseDirectory()
   {
     if(fs.existsSync(this.mBASE_PATH) == false)
@@ -259,8 +275,8 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
     const jsonFileName = `${doc._raw.flattenedPath.replace(/\//gi, '_').replace(/-/gi, '_')}`;
     const targetPath = `${this.mBASE_GEN_PATH}${data.documentType.name}/${jsonFileName}.json`;
 
-    this.#writeFile(targetPath, JSON.stringify(doc, null, 2));
     this.mFileListCache.add(data.documentType, data.filePath, jsonFileName);
+    this.#writeFile(targetPath, JSON.stringify(doc, null, 2));
     this.#updateDocumentIndex(data.documentType);
   }
 

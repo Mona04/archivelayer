@@ -7,11 +7,15 @@
     "email": "moksha1905@gmail.com"
   },
   "homepage": "https://mona04.github.io/study-log/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mona04/archivelayer"
+  },
   "type": "module",
   "private": true,
 
   "scripts": {
-    "build": "tsc --build tsconfig.all.json",
+    "packages": "tsc --build tsconfig.all.json",
     "dev": "npm run --prefix tests/next-test dev",
     "doc": "npm run --prefix tests/next-test build",
     "test": "npm run --prefix tests/jest-test test"

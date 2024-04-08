@@ -20,6 +20,11 @@ export async function Startup(baseFolder?:string|null)
   const archiveManager = new ArchiveManager();
   archiveManager.initialize(configs);
   
+  listFiles(
+    configs.sourcePath, 
+    async (fileName)=>{await archiveManager.registFile(fileName)},
+    (delta)=>{ console.log(chalk.green(`Finish to build archives !!!! It takes ${delta} m/s\n\n`))} );
+    
   const watcher = new FileWatcher(
     configs.sourcePath, 
     (fileName)=>{archiveManager.fileUpdated(fileName)},
