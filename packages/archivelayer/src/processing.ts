@@ -23,13 +23,14 @@ export async function Startup(baseFolder?:string|null)
   listFiles(
     configs.sourcePath, 
     async (fileName)=>{await archiveManager.registFile(fileName)},
-    (delta)=>{ console.log(chalk.green(`Finish to build archives !!!! It takes ${delta} m/s\n\n`))} );
-    
-  const watcher = new FileWatcher(
-    configs.sourcePath, 
-    (fileName)=>{archiveManager.fileUpdated(fileName)},
-    (fileName)=>{archiveManager.fileRemoved(fileName)}
-  ); 
+    (delta)=>{ 
+      console.log(chalk.green(`Intialized to watch archives !!!! It takes ${delta} m/s\n\n`))  
+      const watcher = new FileWatcher(
+        configs.sourcePath, 
+        (fileName)=>{archiveManager.fileUpdated(fileName)},
+        (fileName)=>{archiveManager.fileRemoved(fileName)}
+      ); 
+    });
 }
 
 export async function Build(baseFolder?:string|null)
