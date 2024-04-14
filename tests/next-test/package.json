@@ -25,6 +25,7 @@
     "remark-parse": "11.0.0",
     "remark-math": "6.0.0",
     "remark-gfm": "4.0.0",
+    "rehype-raw": "7.0.0",
     "rehype-pretty-code": "0.13.1",
     "rehype-mathjax": "6.0.0",
     "rehype-katex": "7.0.0",

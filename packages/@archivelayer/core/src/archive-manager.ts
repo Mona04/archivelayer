@@ -90,6 +90,14 @@ export class ArchiveManager
     this.mFileListCache.add(docType, fileName, jsonFileName);
   }
 
+  clearFolder()
+  {
+    if(fs.existsSync(this.mBASE_PATH))
+    {
+      fs.rmSync(this.mBASE_PATH, { recursive: true, force: true});
+    }
+  }
+
   #checkBaseDirectory()
   {
     if(fs.existsSync(this.mBASE_PATH) == false)

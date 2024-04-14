@@ -58,15 +58,14 @@ async function processMarkdown(params:ProcessParams, data:Buffer)
   const metaData = parsedContent.data;
   const content = parsedContent.content;
 
-  var parsed = unified()
-  .use(parse)
+  var parsed = unified().use(parse)
 
   if(params.remarkPlugins != undefined)
   {
     parsed = parsed.use(params.remarkPlugins)
   }
 
-  var rehyped = parsed.use(rehype);
+  var rehyped = parsed.use(rehype, {allowDangerousHtml: true });
 
   if(params.rehypePlugins != undefined)
   {
@@ -102,20 +101,21 @@ async function processMDX(params:ProcessParams, data:Buffer)
     development: false,
     remarkPlugins: params.remarkPlugins,
     rehypePlugins: params.rehypePlugins});
-  params.callback({
-    documentType : params.docType, 
-    filePath     : params.filePath, 
-    rawContent   : content,
-    metaData     : metaData, 
-    content      : compiled.value.toString(),
-  });  
+
+    params.callback({
+      documentType : params.docType, 
+      filePath     : params.filePath, 
+      rawContent   : content,
+      metaData     : metaData, 
+      content      : compiled.value.toString(),
+    });  
 }
 
 function waitFor(condition:()=>boolean, delay:number) {
 
   const poll = (resolve:any) => {
     if(condition()) resolve();
-    else setTimeout(_ => poll(resolve), delay);
+    else setTimeout(() => poll(resolve), delay);
   }
 
   return new Promise(poll);

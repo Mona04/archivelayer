@@ -4,8 +4,7 @@ import {
 } from '@archivelayer/utils'
 
 import {  
-  requireConfigs, 
-  ArchiveLayerConfigs, 
+  requireConfigs,
   ArchiveManager, 
 } from '@archivelayer/core'
 
@@ -40,6 +39,7 @@ export async function Build(baseFolder?:string|null)
   if(configs.sourcePath === undefined) return;
 
   const archiveManager = new ArchiveManager();
+  archiveManager.clearFolder();
   archiveManager.initialize(configs);
 
   listFiles(
