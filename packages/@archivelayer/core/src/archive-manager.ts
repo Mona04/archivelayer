@@ -85,7 +85,7 @@ export class ArchiveManager
     if(docType == null) return;
 
     const flattenedPath = fileName.replace(/\.[^/.]+$/, "")
-    const jsonFileName = `${flattenedPath.replace(/\//gi, '_').replace(/-/gi, '_')}`;
+    const jsonFileName = `${this.#pathNorm(flattenedPath)}`;
 
     this.mFileListCache.add(docType, fileName, jsonFileName);
   }
@@ -284,7 +284,7 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
       doc[fieldName] = field?.resolve(doc);
     }
 
-    const jsonFileName = `${doc._raw.flattenedPath.replace(/\//gi, '_').replace(/-/gi, '_')}`;
+    const jsonFileName = `${this.#pathNorm(doc._raw.flattenedPath)}`;
     const targetPath = `${this.mBASE_GEN_PATH}${data.documentType.name}/${jsonFileName}.json`;
 
     this.mFileListCache.add(data.documentType, data.filePath, jsonFileName);
@@ -322,4 +322,6 @@ export type { MarkdownBody, MDXBody, RawDocumentData }\n`;
   #writeFile(path: string, obj: any){
     fs.writeFileSync(path, obj);
   }
+
+  #pathNorm(path:string){ return path.replace(/\//gi, '_').replace(/[-| ]/gi, '_') }
 }
