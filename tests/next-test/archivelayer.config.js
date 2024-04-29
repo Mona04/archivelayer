@@ -37,7 +37,7 @@ const config = {
       rm_gfm, [rm_math,]
     ],
     rehypePlugins: [
-      saveRawCode, attachHeaderID, rh_raw,
+      attachHeaderID, saveRawCode,
       [ rh_katex,],
       [ rh_prettyCode, prettyCodeOption ],
       addCodeTitleBar,   
@@ -48,7 +48,7 @@ const config = {
       rm_gfm, [rm_math,]
     ],
     rehypePlugins: [
-      saveRawCode, attachHeaderID, rh_raw,
+      attachHeaderID, rh_raw, saveRawCode,
       [ rh_mathjax,],
       [ rh_prettyCode, prettyCodeOption ],
       addCodeTitleBar,

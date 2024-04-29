@@ -17,7 +17,7 @@ export async function Startup(baseFolder?:string|null)
   if(configs.sourcePath === undefined) return;
   
   const archiveManager = new ArchiveManager();
-  archiveManager.initialize(configs);
+  archiveManager.initialize(configs, {});
   
   listFiles(
     configs.sourcePath, 
@@ -32,15 +32,20 @@ export async function Startup(baseFolder?:string|null)
     });
 }
 
-export async function Build(baseFolder?:string|null)
+export async function Build(options?:{baseFolder?:string|null, clearCache:boolean})
 {
-  const configs = await requireConfigs(baseFolder);
+  if(options == undefined) options = {clearCache:true};
+
+  const configs = await requireConfigs(options.baseFolder);
   
   if(configs.sourcePath === undefined) return;
 
   const archiveManager = new ArchiveManager();
-  archiveManager.clearFolder();
-  archiveManager.initialize(configs);
+  archiveManager.initialize(
+    configs, 
+    {
+      clearCache:options.clearCache
+    });
 
   listFiles(
     configs.sourcePath, 

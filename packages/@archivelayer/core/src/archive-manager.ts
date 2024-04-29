@@ -19,12 +19,14 @@ export class ArchiveManager
     this.mFileListCache = new FileListCache();
   }
 
-  initialize(configs: ArchiveLayerConfigs)
+  initialize(configs: ArchiveLayerConfigs, options:{clearCache?:boolean})
   {
     this.mConfigs = configs;
 
     this.mBASE_PATH     = (configs.outputPath ?? './') + '.archivelayer/';
     this.mBASE_GEN_PATH = (configs.outputPath ?? './') + '.archivelayer/generated/';
+
+    if(options.clearCache) this.#clearCache();
 
     this.#checkBaseDirectory();    
     this.#makePackageJson();
@@ -90,11 +92,11 @@ export class ArchiveManager
     this.mFileListCache.add(docType, fileName, jsonFileName);
   }
 
-  clearFolder()
+  #clearCache()
   {
     if(fs.existsSync(this.mBASE_PATH))
     {
-      fs.rmSync(this.mBASE_PATH, { recursive: true, force: true});
+      fs.rmSync(this.mBASE_PATH, { recursive: true});
     }
   }
 
