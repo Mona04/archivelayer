@@ -85,7 +85,7 @@ export const listFiles = async (
 
 export function findFile(findpath:string, filename:string) 
 {
-  findpath = path.normalize(findpath).replace(/\//gi, '\\');
+  findpath = path.normalize(findpath).replace(/\//gi, '/');
 
   for(let i = 0; i < 20; i++)
   {
@@ -94,6 +94,6 @@ export function findFile(findpath:string, filename:string)
     {
       return cur;
     }
-    findpath = findpath.substring(0, findpath.lastIndexOf('\\'));
+    findpath = findpath.substring(0, findpath.lastIndexOf('/'));
   }
 }
