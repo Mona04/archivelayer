@@ -47,8 +47,8 @@ export interface ProcessParams {
   docType: DocumentType,
   filePath: string,
   FileFullPath: string,
-  remarkPlugins: unifiedd.Pluggable[]|undefined,
-  rehypePlugins: unifiedd.Pluggable[]|undefined,
+  remarkPlugins: unifiedd.PluggableList|undefined,
+  rehypePlugins: unifiedd.PluggableList|undefined,
   callback: (data:ProcessedDocument) => void
 }
 

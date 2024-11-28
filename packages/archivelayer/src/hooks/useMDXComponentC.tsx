@@ -1,4 +1,4 @@
-import { run } from '@mdx-js/mdx'
+/*import { run } from '@mdx-js/mdx'
 import { MDXModule } from '@mdx-js/mdx/lib/evaluate';
 import * as runtime from 'react/jsx-runtime'
 import { Fragment, useState, useEffect, createElement } from 'react';
@@ -22,4 +22,4 @@ export const useMDXComponentC = (args:MDXArgs, props:MDXProps) =>
     
   if(mdxModule) return createElement(mdxModule.default, props);
   else createElement(Fragment, props);
-}
+}*/

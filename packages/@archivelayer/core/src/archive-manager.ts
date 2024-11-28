@@ -160,7 +160,7 @@ export class ArchiveManager
 
       allFiless.push(filesName);
 
-      fileMJS += `import { all${docType.name}s } from './${docType.name}/_index.js' \n`
+      fileMJS += `import { ${filesName} } from './${docType.name}/_index.js' \n`
       fileDTS += `export declare const ${filesName}: T.${docType.name}[] \n`      
     }
 

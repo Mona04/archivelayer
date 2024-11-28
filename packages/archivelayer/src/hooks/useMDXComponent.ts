@@ -1,6 +1,6 @@
 import { runSync } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
-import { Fragment, createElement } from 'react';
+import { createElement } from 'react';
 import { MDXArgs, MDXProps } from './mdxComponent';
 
 export function useMDXComponent(args:MDXArgs, props:MDXProps)
@@ -9,8 +9,7 @@ export function useMDXComponent(args:MDXArgs, props:MDXProps)
     args.code, 
     {
       ...runtime,
-      baseUrl: args.baseUrl == undefined ? import.meta.url : args.baseUrl,
-      Fragment: Fragment
+      baseUrl: args.baseUrl == undefined ? import.meta.url : args.baseUrl
     });
   return createElement(Content, props);
 }

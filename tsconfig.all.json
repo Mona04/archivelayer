@@ -6,7 +6,6 @@
       { "path": "./packages/@archivelayer/utils" },
       { "path": "./packages/@archivelayer/core" },
       { "path": "./packages/archivelayer" },
-      { "path": "./packages/next-archivelayer" },
       { "path": "./tests/next-component-test" }
     ]
   }

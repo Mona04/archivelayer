@@ -21,9 +21,12 @@
     "test": "npm run --prefix tests/jest-test test"
   },
   "workspaces": [
-    "./packages/*"
+    "./packages/*",
+    "./packages/@archivelayer/*",
+    "./tests/*"
   ],
   "dependencies": {
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
   }

@@ -1,11 +1,16 @@
 import fs from 'fs'
 import path from 'path'
-import {minimatch} from 'minimatch'
+import { minimatch} from 'minimatch'
 
 export function isFilePathMatchPattern(filePath:string, pattern:string) {
   return minimatch(filePath, pattern)
 }
 
+/**
+ * `fs.watch` 를 래핑하는 함수
+ * 1. `fs.watch` 가 1번 수정되어도 2번 이상 신호를 주는 현상이 있어서 이를 막기위함
+ * 2. 파일의 경로 끝에 지정한 경로를 붙여주는 역할
+ */
 export class FileWatcher
 {
   mActionDone : {[key:string]:number} = {} 
@@ -48,6 +53,13 @@ export class FileWatcher
   }
 }
 
+/**
+ * 특정 경로/파일에 대해서 `updateCallback` 를 수행 후
+ * 모든 수행이 끝난 후 `finishCallback` 를 걸린시간 인자를 넣어서 호출한다.
+ * @param path 업데이트를 시작할 경로 또는 파일이름
+ * @param updateCallback 
+ * @param finishCallback 
+ */
 export const listFiles = async (  
   path:string, 
   updateCallback: (fileName:string)=>(void|Promise<void>),
@@ -83,6 +95,12 @@ export const listFiles = async (
   finishCallback(currentTime - lastFrameTime);
 };
 
+/**
+ * 상위 경로로 올라가면해 원하는 파일을 찾음
+ * @param findpath 찾기 시작할 디렉토리
+ * @param filename 원하는 파일
+ * @returns 파일의 실제 경로
+ */
 export function findFile(findpath:string, filename:string) 
 {
   findpath = path.normalize(findpath).replace(/\//gi, '/');

@@ -2,7 +2,7 @@
   "compilerOptions": 
   {
     "noEmit": false,
-    "composite": true,
+    "composite": true, // references 사용하기 위함
     "declaration": true,
     "declarationMap": true,
     "incremental": true,

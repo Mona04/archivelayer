@@ -43,7 +43,7 @@ export interface ComputedFieldDefs {
 export interface DocumentType {
   name             : string,
   contentType?     : 'markdown' | 'mdx' | undefined,
-  filePathPattern? : string,
+  filePathPattern? : string, // glob pattern like `**/*.md`.
   fields           : FieldDefs,
   computedFields   : ComputedFieldDefs
 }
